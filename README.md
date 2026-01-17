@@ -9,7 +9,7 @@ This project performs a **transient simulation of a solar water heating system**
 ### Key Objectives
 
 * Apply **regression analysis** to experimental solar irradiance and ambient temperature data
-* Generate smooth, continuous functions ( I(t) ) and ( T_a(t) ) from discrete measurements
+* Generate smooth, continuous functions **I(t)** and **Tₐ(t)** from discrete measurements
 * Solve the **transient energy balance equation** using ODE integration
 * Compute **dynamic F₂ values** and determine the reflector angle yielding maximum average F₂
 
@@ -17,41 +17,42 @@ This project performs a **transient simulation of a solar water heating system**
 
 ### Methodology
 
-1. **Regression of Experimental Data**
+#### 1. Regression of Experimental Data
 
-   * Time-series data sampled at 10-minute intervals
-   * Second-order polynomial regression (`polyfit`) applied to:
+* Time-series data sampled at 10-minute intervals
+* Second-order polynomial regression (`polyfit`) applied to:
 
-     * Solar irradiance ( I(t) )
-     * Ambient temperature ( T_a(t) )
-   * Regression ensures smooth input functions for stable transient ODE solving and avoids numerical discontinuities
+  * Solar irradiance **I(t)**
+  * Ambient temperature **Tₐ(t)**
+* Regression ensures smooth input functions for stable transient ODE solving and avoids numerical discontinuities
 
-2. **Transient Thermal Model**
+#### 2. Transient Thermal Model
 
-   * Water temperature evolution obtained by solving:
-     [
-     M C_p \frac{dT_w}{dt} = A_i \left[\tau\alpha I(t) - U_L (T_w - T_a)\right]
-     ]
-   * Reflector geometry affects the effective absorber area ( A_i ), which is a function of reflector angle ( \phi )
+* Water temperature evolution obtained by solving the transient energy balance:
 
-3. **Figure of Merit Calculation**
+  **M · Cp · (dTw/dt) = Ai · [ (τ·α) · I(t) − UL · (Tw − Tₐ) ]**
 
-   * First figure of merit:
-     [
-     F_1 = \frac{\tau\alpha}{U_L}
-     ]
-   * Second figure of merit ( F_2 ) computed dynamically between successive time steps using regressed ( I(t) ) and ( T_a(t) )
-   * Mean ( F_2 ) evaluated via numerical integration (`trapz`) over the entire operating period
+* Reflector geometry affects the effective absorber area **Ai**, which is a function of reflector angle **ϕ**
 
-4. **Optimization of Reflector Angle**
+#### 3. Figure of Merit Calculation
 
-   * Reflector angle ( \phi ) varied from **40° to 240°**
-   * For each angle:
+* **First figure of merit**:
 
-     * Effective area recalculated
-     * Transient temperature predicted
-     * Average ( F_2 ) computed
-   * Optimal reflector angle identified based on **maximum average F₂**
+  **F₁ = (τ · α) / UL**
+
+* **Second figure of merit (F₂)** computed dynamically between successive time steps using regressed **I(t)** and **Tₐ(t)**
+
+* Mean **F₂** evaluated via numerical integration (`trapz`) over the entire operating period
+
+#### 4. Optimization of Reflector Angle
+
+* Reflector angle **ϕ** varied from **40° to 240°**
+* For each angle:
+
+  * Effective area recalculated
+  * Transient temperature predicted
+  * Average **F₂** computed
+* Optimal reflector angle identified based on **maximum average F₂**
 
 ---
 
@@ -61,11 +62,11 @@ This project performs a **transient simulation of a solar water heating system**
 * Solar irradiance and ambient temperature data (used for regression)
 * System parameters:
 
-  * Water mass (M)
-  * Specific heat capacity (Cp)
-  * Absorber dimensions (a, b)
-  * Overall heat loss coefficient (( U_L ))
-  * Optical efficiency (( \tau\alpha ))
+  * Water mass **M**
+  * Specific heat capacity **Cp**
+  * Absorber dimensions **a, b**
+  * Overall heat loss coefficient **UL**
+  * Optical efficiency **(τ · α)**
 
 ---
 
@@ -73,10 +74,10 @@ This project performs a **transient simulation of a solar water heating system**
 
 * Regressed profiles of:
 
-  * Solar irradiance ( I(t) )
-  * Ambient temperature ( T_a(t) )
-* Optimal reflector angle ( \phi_{opt} )
-* Maximum average second figure of merit ( F_2 )
+  * Solar irradiance **I(t)**
+  * Ambient temperature **Tₐ(t)**
+* Optimal reflector angle **ϕₒₚₜ**
+* Maximum average second figure of merit **F₂**
 * Plot of **Average F₂ vs Reflector Angle**
 
 ---
